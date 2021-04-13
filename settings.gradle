@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name = "3DScrollWheel1"
+rootProject.name = "3DScrollWheel"
