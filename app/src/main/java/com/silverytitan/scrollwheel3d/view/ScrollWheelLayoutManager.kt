@@ -13,10 +13,6 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.roundToInt
 
-/**
- * @author Created by yingjie.zhao on 2021/4/13 0013.
- *          Desc:
- */
 class ScrollWheelLayoutManager : RecyclerView.LayoutManager() {
     /**
      * 滑动的方向
@@ -50,7 +46,7 @@ class ScrollWheelLayoutManager : RecyclerView.LayoutManager() {
     private val M_MAX_ROTATION_Y = 15.0f//最大Y轴旋转度数
     private var mTravel = 0
 
-    public fun getCenterPosition(): Int {
+    fun getCenterPosition(): Int {
         var pos = (mSumDx / getIntervalWidth())
         if ((mSumDx % getIntervalWidth()) > getIntervalWidth() * 0.5f) pos++
         return pos
@@ -187,19 +183,16 @@ class ScrollWheelLayoutManager : RecyclerView.LayoutManager() {
         val visibleRect = getVisibleArea()
         //回收越界子View
         for (i in 0 until childCount) {
-            val child = getChildAt(i)
-            val position = getPosition(child!!)
+            val child = getChildAt(i) ?: continue
+            val position = getPosition(child)
             val rect = mItemRects[position]
             if (!Rect.intersects(rect, visibleRect)) {
                 removeAndRecycleView(child, recycler)
                 mHasAttachedItems.put(position, false)
             } else {
                 layoutDecoratedWithMargins(
-                    child,
-                    rect.left - mSumDx,
-                    rect.top,
-                    rect.right - mSumDx,
-                    rect.bottom
+                    child, rect.left - mSumDx,
+                    rect.top, rect.right - mSumDx, rect.bottom
                 )
                 handleChildView(child, rect.left - mStartX - mSumDx)
                 mHasAttachedItems.put(position, true)

@@ -10,15 +10,12 @@ import android.util.AttributeSet
 import androidx.annotation.Nullable
 import androidx.appcompat.widget.AppCompatImageView
 
-/**
- * @author Created by yingjie.zhao on 2021/4/13 0013.
- *          Desc:
- */
-class RotationImageView(context: Context) : AppCompatImageView(context) {
+class RotationImageView(context: Context, @Nullable attrs: AttributeSet) :
+    AppCompatImageView(context, attrs) {
     private lateinit var paint: Paint
     private lateinit var shader: BitmapShader
 
-    constructor(context: Context, @Nullable attrs: AttributeSet) : this(context) {
+    init {
         initFunction()
     }
 
@@ -34,7 +31,9 @@ class RotationImageView(context: Context) : AppCompatImageView(context) {
         super.onDraw(canvas)
         paint.isAntiAlias = true
         paint.isDither = true
-        paint.shader = shader
+        if (this::shader.isInitialized) {
+            paint.shader = shader
+        }
         canvas!!.drawRect(0f, 0f, measuredWidth.toFloat(), measuredHeight.toFloat(), paint)
     }
 }
